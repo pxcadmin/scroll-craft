@@ -20,7 +20,7 @@ fs.mkdirSync(path.join(out, 'assets'), { recursive: true });
 fs.cpSync(path.join(src, 'assets'), path.join(out, 'assets'), { recursive: true });
 
 // one stylesheet, one script
-let css = ['scrollcraft.css', 'styles.css', 'scenes.css'].map(read).join('\n');
+let css = ['scrollcraft.css', 'styles.css', 'scenes.css', 'hero.css'].map(read).join('\n');
 let js = ['scrollcraft.js', 'dominoes.js', 'site.js', 'hero.js'].map(read).join('\n;');
 let quiz = read('screener.js');
 try {

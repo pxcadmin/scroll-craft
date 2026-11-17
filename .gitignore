@@ -31,3 +31,4 @@ desktop.ini
 !pxc-site/src/assets/hero/*.mp4
 !pxc-site/site/assets/hero/*.mp4
 pxc-site/hero-src/
+!pxc-site/film/*.mp4

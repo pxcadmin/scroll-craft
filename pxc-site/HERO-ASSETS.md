@@ -1,19 +1,24 @@
-# Photographic hero: how it was made
+# Photographic hero: how it is made
 
-**Built (Nov 17, 2026):** one Seedance 2.5 shot of a real-looking clinic, scrubbed by scroll, with depth planes in front of it.
+**Built Nov 17, 2026.** Four photographs of one clinic, each cut into real depth planes, plus one filmed turn between them. The same timeline drives the live page (scroll) and a rendered 23.7 s film with a soundtrack (`film/pxc-hero-film.mp4`).
 
-| Step | Tool | Output |
-| --- | --- | --- |
-| Chaotic clinic plate | kie.ai Seedream 5 Pro (`scripts/kie.mjs still`) | `hero-src/before-plate.png`, 2720 x 1530 |
-| Camera move, chaos to calm | Higgsfield Seedance 2.5 image-to-video (`tools/seedance.py`), 480p draft then 1080p finalize | `hero-src/move-1080.mp4`, 6 s |
-| Scrub encodes | `scripts/encode.sh` (dense keyframes) | `src/assets/hero/clinic-move.mp4` (desktop), `clinic-move-m.mp4` (9:16 phone crop) |
-| Posters | First and last frames of the shot | `clinic-chaos*.webp`, `clinic-calm*.webp` |
+| Beat | Source | Planes | Film |
+| --- | --- | --- | --- |
+| Chaos, close (every seat taken, phones ringing, charts on the floor) | Qwen Image 3 edit of the chaos plate (`tools/hf_image.py`) | room, far, mid, near, floating phone, charts, paper, notes | 5.0 s, plus a 1.2 s handoff |
+| Chaos, wide | First frame of the Seedance shot | room, far, mid, near, floating objects | 3.3 s |
+| The turn | Seedance 2.5 image-to-video (`tools/seedance.py`) | footage | 6.0 s |
+| Calm, wide | Last frame of the Seedance shot | room, far, mid, near | 2.5 s, plus a 1.2 s handoff |
+| Calm, close (a nurse takes a patient back to be roomed; one friendly patient waits) | Qwen Image 3 edit from both closes | room, mid (nurse and patient together), near | 4.5 s |
 
-The calm state is the shot's own last frame, so both states match by construction: same room, same people, same lens. The brand sits in the photograph (the desk light strip runs red in the chaos and cyan in the calm) and in a live edge glow in the page that follows the scroll.
+**How a photo becomes planes** (`tools/layers.py`): a clean plate of the same frame with every person removed (Qwen edit) is aligned to the photo; everything that differs is lifted out; Depth Anything V2 Small (ONNX, CPU, `hero-src/models/depth.onnx`) cuts overlapping people apart where depth jumps; each piece goes to far, mid or near by its median depth. The room plane is the photo itself, borrowing the clean plate only right behind the cutouts, so at rest the stack reproduces the photo exactly and both handoffs to the footage are frame-identical. Contact pairs (the nurse's hand on the patient's shoulder) are kept in one plane with `--t`.
 
-Layers in the page, back to front: footage (pointer counter-move and idle breath), window-light air, glass chips at four depths, the brand edge glow, the headline scrim, then the copy. Reduced motion never downloads the footage; it cross-fades the two posters. `hero-src/` holds the raw generations and is git-ignored.
+**Motion** (`src/hero.js`): planes move by depth (room 0, far .35, mid .65, near 1, objects 1.2 to 1.7). A scene arrives back to front, the room first and the nearest planes dropping in last from in front of the lens; it leaves by flying past the lens, nearest first, with motion blur.
 
-Keys live in the git-ignored `.env` at the repo root (`KIE_AI_API_KEY`, `HF_KEY`). Never commit them.
+**Sound** (`tools/soundtrack.py`): composed in code, royalty-free. A frantic, off-kilter 168 bpm with three phones that never stop, a tape-stop at the turn, then a warm 76 bpm with no phones. The film has the linear score; the site has two loops, cross-faded by scroll, that play only when the visitor turns sound on.
+
+**Rebuild the film**: `npm run build`, serve `site/` on port 4500, then `node tools/film.mjs`.
+
+Keys live in the git-ignored `.env` at the repo root (`KIE_AI_API_KEY`, `HF_KEY`). `hero-src/` (raw generations, depth model, frames) is git-ignored.
 
 ---
 
