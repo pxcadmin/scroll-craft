@@ -43,85 +43,35 @@
 </header>
 <main id="main">
 
-<section class="hero" id="hero" data-sc-act="pin" data-sc-span="3.4" aria-labelledby="hero-h">
+<section class="hero" id="hero" data-sc-act="scrub" data-sc-span="3.2" data-sc-dwell="0.18" aria-labelledby="hero-h">
   <div data-sc-stage class="hero__stage">
-    
-<div class="scene" aria-hidden="true">
-  <div class="scene__bg scene__bg--before"></div><div class="scene__bg scene__bg--after"></div>
-  <div class="scene__fit"><div class="scene__cam">
-    <div class="floor"></div>
-
-    <!-- the calm room, beyond the doorway -->
-    <div class="wall wall--far"></div>
-    <div class="lamp" style="--x:-420;--z:-2700"></div><div class="lamp" style="--x:0;--z:-2780"></div><div class="lamp" style="--x:420;--z:-2700"></div>
-    <div class="o desk desk--after" style="--x:0;--y:212;--z:-2500;--w:820"><svg viewBox="0 0 820 300" fill="none" stroke="var(--s)" stroke-width="1.5" aria-hidden="true" focusable="false">
-  <path d="M132 22c-26-4-40-22-44-46 26 2 42 18 44 46zM132 22c2-30 20-48 48-52-2 30-20 48-48 52z" fill="var(--f)"/><path d="M132 22c-8-16-18-26-30-34M132 22c8-20 20-32 34-40"/>
-  <rect x="110" y="22" width="44" height="48" fill="var(--f)"/>
-  <path d="M520 70 548 0h142l-28 70z" fill="var(--f)"/>
-  <path d="M398 70v-26h24v26" fill="var(--f)"/>
-  <rect x="0" y="70" width="820" height="26" fill="var(--f)"/>
-  <rect x="40" y="96" width="740" height="204" fill="var(--f)"/>
-  <path d="M62 96v204M80 96v204M98 96v204M116 96v204"/>
-  <circle cx="410" cy="198" r="58"/><path d="M396 160h28v24h24v28h-24v24h-28v-24h-24v-28h24z"/>
-</svg></div>
-    <div class="o " style="--x:-330;--y:-120;--z:-2060;--w:250"><div class="glass glass--after"><h4>Phones</h4><span class="big">Calls answered</span></div></div>
-    <div class="o " style="--x:0;--y:-160;--z:-2100;--w:250"><div class="glass glass--after"><h4>At the window</h4><span class="big">Queue: 0</span></div></div>
-    <div class="o " style="--x:330;--y:-120;--z:-2060;--w:250"><div class="glass glass--after"><h4>Handoffs</h4><span class="big">Next step: owned.</span></div></div>
-
-    <!-- L0: the wall, the note board, the doorway -->
-    <div class="wall wall--l" data-z="-900"><div class="clock"></div></div>
-    <div class="wall wall--r" data-z="-900"><div class="board"><i style="--l:4;--t:6;--r:-5;--c:rgba(255,52,57,.4)"></i><i style="--l:22;--t:3;--r:4"></i><i style="--l:41;--t:8;--r:-3;--c:rgba(181,164,228,.5)"></i><i style="--l:60;--t:4;--r:6"></i><i style="--l:79;--t:7;--r:-4"></i><i style="--l:8;--t:36;--r:5"></i><i style="--l:27;--t:40;--r:-6;--c:rgba(255,52,57,.4)"></i><i style="--l:46;--t:34;--r:3"></i><i style="--l:66;--t:38;--r:-2;--c:rgba(181,164,228,.5)"></i><i style="--l:82;--t:41;--r:7"></i><i style="--l:14;--t:68;--r:-4"></i><i style="--l:36;--t:71;--r:5;--c:rgba(181,164,228,.5)"></i><i style="--l:57;--t:66;--r:-7"></i><i style="--l:76;--t:72;--r:3;--c:rgba(255,52,57,.4)"></i></div></div>
-    <div class="wall wall--t" data-z="-900"><span class="wall__sign">Check-in</span></div>
-    <div class="door" data-z="-898"></div>
-
-    <!-- chips that multiply as the pressure builds -->
-    <div class="o o--chip o--wide" style="--x:-420;--y:-210;--z:-800" data-late><div class="bob" style="--t:5;--d:0"><span class="chip"><i class="dot dot--soft"></i>Voicemail full</span></div></div>
-    <div class="o o--chip" style="--x:250;--y:-250;--z:-700" data-late><div class="bob" style="--t:7;--d:0"><span class="chip"><i class="dot dot--soft"></i>Refill request</span></div></div>
-    <div class="o o--chip" style="--x:-330;--y:40;--z:-560" data-late><div class="bob" style="--t:7;--d:0"><span class="chip"><i class="dot is-ring"></i>Line 3 ringing</span></div></div>
-    <div class="o o--chip o--wide" style="--x:190;--y:-40;--z:-470" data-late><div class="bob" style="--t:7;--d:0"><span class="chip"><i class="dot dot--soft"></i>Callback, no owner</span></div></div>
-    <div class="o o--chip" style="--x:-250;--y:-150;--z:-300" data-late><div class="bob" style="--t:7;--d:0"><span class="chip"><i class="dot dot--soft"></i>Form missing</span></div></div>
-    <div class="o o--chip o--wide" style="--x:300;--y:70;--z:-230" data-late><div class="bob" style="--t:5;--d:0"><span class="chip"><i class="dot is-ring"></i>Double-booked 10:20</span></div></div>
-
-    <!-- L1: far -->
-    <div class="o o--wide" style="--x:-420;--y:-50;--z:-640;--w:300"><div class="glass"><h4><span>Today</span><span>Over by 5</span></h4><div class="sched-g">
-      <div><i style="--t:2;--h:20"></i><i style="--t:26;--h:16"></i><i class="x" style="--t:36;--h:18"></i><i style="--t:60;--h:30"></i></div>
-      <div><i style="--t:6;--h:26"></i><i class="x" style="--t:24;--h:18"></i><i style="--t:48;--h:18"></i><i style="--t:70;--h:24"></i></div>
-      <div><i style="--t:0;--h:16"></i><i style="--t:20;--h:24"></i><i style="--t:50;--h:20"></i><i class="x" style="--t:62;--h:20"></i></div>
-      <div><i style="--t:8;--h:22"></i><i style="--t:36;--h:26"></i><i class="x" style="--t:54;--h:16"></i><i style="--t:76;--h:20"></i></div></div></div></div>
-    <div class="o " style="--x:520;--y:0;--z:-620;--w:290"><div class="glass"><h4><span>At the window</span><span>7 waiting</span></h4><div class="queue"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div></div>
-
-    <!-- L2: the desk -->
-    <div class="o desk" style="--x:30;--y:212;--z:-360;--w:820"><svg viewBox="0 0 820 300" fill="none" stroke="var(--s)" stroke-width="1.5" aria-hidden="true" focusable="false">
-  <path d="M132 22c-26-4-40-22-44-46 26 2 42 18 44 46zM132 22c2-30 20-48 48-52-2 30-20 48-48 52z" fill="var(--f)"/><path d="M132 22c-8-16-18-26-30-34M132 22c8-20 20-32 34-40"/>
-  <rect x="110" y="22" width="44" height="48" fill="var(--f)"/>
-  <path d="M520 70 548 0h142l-28 70z" fill="var(--f)"/>
-  <g fill="rgba(239,238,243,.85)" stroke="rgba(23,23,29,.5)"><path d="M214 70l10-9h98l-10 9zM220 61l10-9h98l-10 9zM212 52l10-9h98l-10 9zM224 43l10-9h98l-10 9zM700 70l8-8h84l-8 8zM706 62l8-8h84l-8 8z"/></g>
-  <g stroke="none"><rect x="566" y="12" width="26" height="24" fill="rgba(255,52,57,.75)" transform="rotate(-6 579 24)"/><rect x="606" y="18" width="26" height="24" fill="rgba(181,164,228,.8)" transform="rotate(5 619 30)"/><rect x="640" y="8" width="26" height="24" fill="rgba(247,246,249,.7)" transform="rotate(-3 653 20)"/></g>
-  <rect x="0" y="70" width="820" height="26" fill="var(--f)"/>
-  <rect x="40" y="96" width="740" height="204" fill="var(--f)"/>
-  <path d="M62 96v204M80 96v204M98 96v204M116 96v204"/>
-  <circle cx="410" cy="198" r="58"/><path d="M396 160h28v24h24v28h-24v24h-28v-24h-24v-28h24z"/>
-</svg></div>
-
-    <!-- L3: near -->
-    <div class="o " style="--x:330;--y:200;--z:-130;--w:290"><div class="glass"><h4><span>Front desk</span><span>9:42</span></h4>
-      <div class="row"><i class="dot is-ring"></i>Line 1 ringing<span>0:48</span></div><div class="row"><i class="dot is-ring"></i>Line 2 ringing<span>0:21</span></div>
-      <div class="row"><i class="dot dot--soft"></i>Line 3 on hold<span>6:40</span></div><div class="row"><i class="dot dot--soft"></i>Voicemail<span>Full</span></div></div></div>
-    <div class="o o--wide" style="--x:-300;--y:290;--z:-150;--w:240"><div class="pile"><i style="--n:0;--r:-3"></i><i style="--n:1;--r:2"></i><i style="--n:2;--r:-1"></i><i style="--n:3;--r:4"></i><i style="--n:4;--r:-2"></i><i style="--n:5;--r:1"></i></div></div>
-
-    <!-- L4: floating, nearest -->
-    <div class="o o--blur" style="--x:420;--y:-230;--z:150;--w:150;--rz:14;--ry:-18;--b:3"><div class="bob" style="--t:8"><div class="sheet3d"></div></div></div>
-    <div class="o o--blur o--wide" style="--x:-40;--y:400;--z:250;--w:190;--rz:-22;--ry:24;--b:5"><div class="bob" style="--t:6;--d:2"><div class="sheet3d"></div></div></div>
-    <div class="o o--blur" style="--x:-290;--y:-230;--z:60;--w:120;--rz:-9;--ry:12;--b:2"><div class="bob" style="--t:9;--d:4"><div class="sheet3d"></div></div></div>
-    <div class="o o--chip o--blur" style="--x:170;--y:-200;--z:170;--b:2"><div class="bob" style="--t:7;--d:0"><span class="chip"><i class="dot is-ring"></i>Line 2 ringing</span></div></div>
-    <div class="o o--chip o--blur" style="--x:-215;--y:110;--z:90;--b:1.2"><div class="bob" style="--t:8;--d:0"><span class="chip"><i class="dot is-ring"></i>Line 1 ringing</span></div></div>
-    <div class="o o--chip o--blur" style="--x:40;--y:230;--z:230;--b:3"><div class="bob" style="--t:5;--d:0"><span class="chip"><i class="dot dot--soft"></i>On hold 6:40</span></div></div>
-  </div></div>
-</div>
+    <div class="hero__media" aria-hidden="true">
+      <picture class="sc-stage__poster">
+        <source media="(max-width: 860px)" srcset="/assets/hero/clinic-chaos-m.webp">
+        <img src="/assets/hero/clinic-chaos.webp" width="1920" height="1080" alt="" fetchpriority="high">
+      </picture>
+      <picture class="hero__after">
+        <source media="(max-width: 860px)" srcset="/assets/hero/clinic-calm-m.webp">
+        <img src="/assets/hero/clinic-calm.webp" width="1920" height="1080" alt="" loading="lazy">
+      </picture>
+      <video data-sc-scrub data-sc-src="/assets/hero/clinic-move.mp4" data-sc-src-mobile="/assets/hero/clinic-move-m.mp4" muted playsinline></video>
+    </div>
+    <div class="hero__air" aria-hidden="true"></div>
+    <div class="hero__chips" aria-hidden="true">
+      <span class="hchip hchip--chaos" style="--d:0.55;--x:70%;--y:30%"><span class="hchip__in"><i class="dot is-ring"></i>Line 3 ringing</span></span>
+      <span class="hchip hchip--chaos" style="--d:0.9;--x:84%;--y:70%"><span class="hchip__in"><i class="dot dot--soft"></i>On hold 6:40</span></span>
+      <span class="hchip hchip--chaos" style="--d:0.3;--x:62%;--y:17%"><span class="hchip__in"><i class="dot dot--soft"></i>Voicemail full</span></span>
+      <span class="hchip hchip--chaos" style="--d:0.75;--x:58%;--y:52%"><span class="hchip__in"><i class="dot is-ring"></i>Callback, no owner</span></span>
+      <span class="hchip hchip--calm" style="--d:0.5;--x:70%;--y:24%"><span class="hchip__in"><i class="dot dot--cyan"></i>Calls answered</span></span>
+      <span class="hchip hchip--calm" style="--d:0.85;--x:82%;--y:58%"><span class="hchip__in"><i class="dot dot--cyan"></i>Queue: 0</span></span>
+      <span class="hchip hchip--calm" style="--d:0.35;--x:55%;--y:42%"><span class="hchip__in"><i class="dot dot--cyan"></i>Next step: owned</span></span>
+    </div>
+    <div class="hero__glow" aria-hidden="true"></div>
     <div class="hero__scrim" aria-hidden="true"></div>
+    <p class="vh" id="hero-desc">A busy medical front desk with every waiting chair full, three receptionists on phones and charts piled on the counter. As you scroll, the same clinic becomes calm: the line is gone, the counter is clear and staff greet patients face to face.</p>
     <div class="hero__copy"><div class="hero__fade">
       <p class="eyebrow">Front desk consulting for independent medical practices</p>
-      <h1 class="h1" id="hero-h"><span>Less front-desk chaos.</span> <span><em>More room to care.</em></span></h1>
+      <h1 class="h1" id="hero-h" aria-describedby="hero-desc"><span>Less front-desk chaos.</span> <span><em>More room to care.</em></span></h1>
       <p class="lede">We fix the three front-desk problems costing you the most calls, patients and staff. In 90 days. Measured on day one and again on day 90.</p>
       <div class="actions"><a class="btn" href="/free-front-desk-screener/" data-ev="screener_cta">Take the free screener</a><a class="link" href="/services/90-day-front-desk-reset/#the-90-days">See how the 90 days work</a></div>
       <p class="small">Ten questions. About five minutes. No patient information.</p>

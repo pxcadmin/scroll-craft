@@ -26,3 +26,8 @@ npm-debug.log*
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# PXC hero footage is a delivered asset, not build output. Raw generations stay local.
+!pxc-site/src/assets/hero/*.mp4
+!pxc-site/site/assets/hero/*.mp4
+pxc-site/hero-src/

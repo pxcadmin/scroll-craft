@@ -1,77 +1,40 @@
-import { CTA, closeBlock, deskSvg, faqBlock, faqLd, person } from '../layout.mjs';
+import { CTA, closeBlock, faqBlock, faqLd, person } from '../layout.mjs';
 import { DOMINOES, FAQ_HOME, SHEET_ROWS } from '../content.mjs';
 
-const st = (o) => Object.entries(o).map(([k, v]) => `--${k}:${v}`).join(';');
-const obj = (cls, pos, inner, attr = '') => `<div class="o ${cls}" style="${st(pos)}"${attr}>${inner}</div>`;
-const chip = (text, pos, { ring = true, late = false, blur = 0, wide = false } = {}) =>
-  obj(`o--chip${blur ? ' o--blur' : ''}${wide ? ' o--wide' : ''}`, { ...pos, ...(blur ? { b: blur } : {}) },
-    `<div class="bob" style="--t:${5 + (Math.abs(pos.x) % 4)};--d:${Math.abs(pos.y) % 5}"><span class="chip"><i class="dot${ring ? ' is-ring' : ' dot--soft'}"></i>${text}</span></div>`, late ? ' data-late' : '');
-
-const NOTES = [[4, 6, -5, 'rgba(255,52,57,.4)'], [22, 3, 4], [41, 8, -3, 'rgba(181,164,228,.5)'], [60, 4, 6], [79, 7, -4], [8, 36, 5], [27, 40, -6, 'rgba(255,52,57,.4)'], [46, 34, 3], [66, 38, -2, 'rgba(181,164,228,.5)'], [82, 41, 7], [14, 68, -4], [36, 71, 5, 'rgba(181,164,228,.5)'], [57, 66, -7], [76, 72, 3, 'rgba(255,52,57,.4)']];
-
-const scene = () => `
-<div class="scene" aria-hidden="true">
-  <div class="scene__bg scene__bg--before"></div><div class="scene__bg scene__bg--after"></div>
-  <div class="scene__fit"><div class="scene__cam">
-    <div class="floor"></div>
-
-    <!-- the calm room, beyond the doorway -->
-    <div class="wall wall--far"></div>
-    <div class="lamp" style="--x:-420;--z:-2700"></div><div class="lamp" style="--x:0;--z:-2780"></div><div class="lamp" style="--x:420;--z:-2700"></div>
-    ${obj('desk desk--after', { x: 0, y: 212, z: -2500, w: 820 }, deskSvg(false))}
-    ${obj('', { x: -330, y: -120, z: -2060, w: 250 }, '<div class="glass glass--after"><h4>Phones</h4><span class="big">Calls answered</span></div>')}
-    ${obj('', { x: 0, y: -160, z: -2100, w: 250 }, '<div class="glass glass--after"><h4>At the window</h4><span class="big">Queue: 0</span></div>')}
-    ${obj('', { x: 330, y: -120, z: -2060, w: 250 }, '<div class="glass glass--after"><h4>Handoffs</h4><span class="big">Next step: owned.</span></div>')}
-
-    <!-- L0: the wall, the note board, the doorway -->
-    <div class="wall wall--l" data-z="-900"><div class="clock"></div></div>
-    <div class="wall wall--r" data-z="-900"><div class="board">${NOTES.map(([l, t, r, c]) => `<i style="--l:${l};--t:${t};--r:${r}${c ? `;--c:${c}` : ''}"></i>`).join('')}</div></div>
-    <div class="wall wall--t" data-z="-900"><span class="wall__sign">Check-in</span></div>
-    <div class="door" data-z="-898"></div>
-
-    <!-- chips that multiply as the pressure builds -->
-    ${chip('Voicemail full', { x: -420, y: -210, z: -800 }, { late: true, ring: false, wide: true })}
-    ${chip('Refill request', { x: 250, y: -250, z: -700 }, { late: true, ring: false })}
-    ${chip('Line 3 ringing', { x: -330, y: 40, z: -560 }, { late: true })}
-    ${chip('Callback, no owner', { x: 190, y: -40, z: -470 }, { late: true, ring: false, wide: true })}
-    ${chip('Form missing', { x: -250, y: -150, z: -300 }, { late: true, ring: false })}
-    ${chip('Double-booked 10:20', { x: 300, y: 70, z: -230 }, { late: true, wide: true })}
-
-    <!-- L1: far -->
-    ${obj('o--wide', { x: -420, y: -50, z: -640, w: 300 }, `<div class="glass"><h4><span>Today</span><span>Over by 5</span></h4><div class="sched-g">
-      <div><i style="--t:2;--h:20"></i><i style="--t:26;--h:16"></i><i class="x" style="--t:36;--h:18"></i><i style="--t:60;--h:30"></i></div>
-      <div><i style="--t:6;--h:26"></i><i class="x" style="--t:24;--h:18"></i><i style="--t:48;--h:18"></i><i style="--t:70;--h:24"></i></div>
-      <div><i style="--t:0;--h:16"></i><i style="--t:20;--h:24"></i><i style="--t:50;--h:20"></i><i class="x" style="--t:62;--h:20"></i></div>
-      <div><i style="--t:8;--h:22"></i><i style="--t:36;--h:26"></i><i class="x" style="--t:54;--h:16"></i><i style="--t:76;--h:20"></i></div></div></div>`)}
-    ${obj('', { x: 520, y: 0, z: -620, w: 290 }, '<div class="glass"><h4><span>At the window</span><span>7 waiting</span></h4><div class="queue"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>')}
-
-    <!-- L2: the desk -->
-    ${obj('desk', { x: 30, y: 212, z: -360, w: 820 }, deskSvg(true))}
-
-    <!-- L3: near -->
-    ${obj('', { x: 330, y: 200, z: -130, w: 290 }, `<div class="glass"><h4><span>Front desk</span><span>9:42</span></h4>
-      <div class="row"><i class="dot is-ring"></i>Line 1 ringing<span>0:48</span></div><div class="row"><i class="dot is-ring"></i>Line 2 ringing<span>0:21</span></div>
-      <div class="row"><i class="dot dot--soft"></i>Line 3 on hold<span>6:40</span></div><div class="row"><i class="dot dot--soft"></i>Voicemail<span>Full</span></div></div>`)}
-    ${obj('o--wide', { x: -300, y: 290, z: -150, w: 240 }, '<div class="pile"><i style="--n:0;--r:-3"></i><i style="--n:1;--r:2"></i><i style="--n:2;--r:-1"></i><i style="--n:3;--r:4"></i><i style="--n:4;--r:-2"></i><i style="--n:5;--r:1"></i></div>')}
-
-    <!-- L4: floating, nearest -->
-    ${obj('o--blur', { x: 420, y: -230, z: 150, w: 150, rz: 14, ry: -18, b: 3 }, '<div class="bob" style="--t:8"><div class="sheet3d"></div></div>')}
-    ${obj('o--blur o--wide', { x: -40, y: 400, z: 250, w: 190, rz: -22, ry: 24, b: 5 }, '<div class="bob" style="--t:6;--d:2"><div class="sheet3d"></div></div>')}
-    ${obj('o--blur', { x: -290, y: -230, z: 60, w: 120, rz: -9, ry: 12, b: 2 }, '<div class="bob" style="--t:9;--d:4"><div class="sheet3d"></div></div>')}
-    ${chip('Line 2 ringing', { x: 170, y: -200, z: 170 }, { blur: 2 })}
-    ${chip('Line 1 ringing', { x: -215, y: 110, z: 90 }, { blur: 1.2 })}
-    ${chip('On hold 6:40', { x: 40, y: 230, z: 230 }, { blur: 3, ring: false })}
-  </div></div>
-</div>`;
+// Glass chips float at their own depth in front of the footage. --d is depth (0 far, 1 near).
+const chip = (text, d, x, y, state, ring = false) =>
+  `<span class="hchip hchip--${state}" style="--d:${d};--x:${x}%;--y:${y}%"><span class="hchip__in"><i class="dot${state === 'calm' ? ' dot--cyan' : ring ? ' is-ring' : ' dot--soft'}"></i>${text}</span></span>`;
 
 const hero = (cfg) => `
-<section class="hero" id="hero" data-sc-act="pin" data-sc-span="3.4" aria-labelledby="hero-h">
+<section class="hero" id="hero" data-sc-act="scrub" data-sc-span="3.2" data-sc-dwell="0.18" aria-labelledby="hero-h">
   <div data-sc-stage class="hero__stage">
-    ${scene()}
+    <div class="hero__media" aria-hidden="true">
+      <picture class="sc-stage__poster">
+        <source media="(max-width: 860px)" srcset="/assets/hero/clinic-chaos-m.webp">
+        <img src="/assets/hero/clinic-chaos.webp" width="1920" height="1080" alt="" fetchpriority="high">
+      </picture>
+      <picture class="hero__after">
+        <source media="(max-width: 860px)" srcset="/assets/hero/clinic-calm-m.webp">
+        <img src="/assets/hero/clinic-calm.webp" width="1920" height="1080" alt="" loading="lazy">
+      </picture>
+      <video data-sc-scrub data-sc-src="/assets/hero/clinic-move.mp4" data-sc-src-mobile="/assets/hero/clinic-move-m.mp4" muted playsinline></video>
+    </div>
+    <div class="hero__air" aria-hidden="true"></div>
+    <div class="hero__chips" aria-hidden="true">
+      ${chip('Line 3 ringing', 0.55, 70, 30, 'chaos', true)}
+      ${chip('On hold 6:40', 0.9, 84, 70, 'chaos')}
+      ${chip('Voicemail full', 0.3, 62, 17, 'chaos')}
+      ${chip('Callback, no owner', 0.75, 58, 52, 'chaos', true)}
+      ${chip('Calls answered', 0.5, 70, 24, 'calm')}
+      ${chip('Queue: 0', 0.85, 82, 58, 'calm')}
+      ${chip('Next step: owned', 0.35, 55, 42, 'calm')}
+    </div>
+    <div class="hero__glow" aria-hidden="true"></div>
     <div class="hero__scrim" aria-hidden="true"></div>
+    <p class="vh" id="hero-desc">A busy medical front desk with every waiting chair full, three receptionists on phones and charts piled on the counter. As you scroll, the same clinic becomes calm: the line is gone, the counter is clear and staff greet patients face to face.</p>
     <div class="hero__copy"><div class="hero__fade">
       <p class="eyebrow">Front desk consulting for independent medical practices</p>
-      <h1 class="h1" id="hero-h"><span>Less front-desk chaos.</span> <span><em>More room to care.</em></span></h1>
+      <h1 class="h1" id="hero-h" aria-describedby="hero-desc"><span>Less front-desk chaos.</span> <span><em>More room to care.</em></span></h1>
       <p class="lede">We fix the three front-desk problems costing you the most calls, patients and staff. In 90 days. Measured on day one and again on day 90.</p>
       <div class="actions">${CTA}<a class="link" href="/services/90-day-front-desk-reset/#the-90-days">See how the 90 days work</a></div>
       <p class="small">Ten questions. About five minutes. No patient information.</p>

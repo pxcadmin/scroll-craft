@@ -17,7 +17,7 @@ const write = (f, s) => { const p = path.join(out, f); fs.mkdirSync(path.dirname
 
 fs.rmSync(out, { recursive: true, force: true });
 fs.mkdirSync(path.join(out, 'assets'), { recursive: true });
-for (const f of fs.readdirSync(path.join(src, 'assets'))) fs.copyFileSync(path.join(src, 'assets', f), path.join(out, 'assets', f));
+fs.cpSync(path.join(src, 'assets'), path.join(out, 'assets'), { recursive: true });
 
 // one stylesheet, one script
 let css = ['scrollcraft.css', 'styles.css', 'scenes.css'].map(read).join('\n');
