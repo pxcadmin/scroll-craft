@@ -1,7 +1,8 @@
 """Seedance 2.5 image-to-video through the official Higgsfield SDK.
 
 usage:
-  python3 tools/seedance.py draft <start.png> <end.png or ->  <out.mp4> "<prompt>" [--dur 5]
+  python3 tools/seedance.py draft <start.png> <end.png or ->  <out.mp4> "<prompt>" [--dur 5] [--audio]
+  --audio asks the model for synchronized sound (room tone, speech); off by default for scrub clips.
   python3 tools/seedance.py final <draft_id> <out.mp4>
 
 Credentials: HF_KEY ("KEY_ID:KEY_SECRET"), read from the environment or from
@@ -68,7 +69,7 @@ if __name__ == "__main__":
         start, end, out, prompt = sys.argv[2:6]
         dur = int(sys.argv[sys.argv.index("--dur") + 1]) if "--dur" in sys.argv else 5
         args = {"image_url": upload(start), "prompt": prompt,
-                "duration": dur, "generate_audio": False, "draft": True}
+                "duration": dur, "generate_audio": "--audio" in sys.argv, "draft": True}
         if end != "-":  # "-" lets the model find its own last frame
             args["end_image_url"] = upload(end)
         run("bytedance/seedance-2.5/image-to-video", args, out)

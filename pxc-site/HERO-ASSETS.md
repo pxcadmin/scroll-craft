@@ -1,24 +1,28 @@
 # Photographic hero: how it is made
 
-**Built Nov 17, 2026.** Four photographs of one clinic, each cut into real depth planes, plus one filmed turn between them. The same timeline drives the live page (scroll) and a rendered 23.7 s film with a soundtrack (`film/pxc-hero-film.mp4`).
+**Rebuilt Nov 18, 2026, to the scroll-craft approved-collection rules.** One clinic, photographed in four moments and filmed in two, moving in true depth as the visitor scrolls. The same timeline renders a 25.9 s film with sound (`film/pxc-hero-film.mp4`).
 
-| Beat | Source | Planes | Film |
-| --- | --- | --- | --- |
-| Chaos, close (every seat taken, phones ringing, charts on the floor) | Qwen Image 3 edit of the chaos plate (`tools/hf_image.py`) | room, far, mid, near, floating phone, charts, paper, notes | 5.0 s, plus a 1.2 s handoff |
-| Chaos, wide | First frame of the Seedance shot | room, far, mid, near, floating objects | 3.3 s |
-| The turn | Seedance 2.5 image-to-video (`tools/seedance.py`) | footage | 6.0 s |
-| Calm, wide | Last frame of the Seedance shot | room, far, mid, near | 2.5 s, plus a 1.2 s handoff |
-| Calm, close (a nurse takes a patient back to be roomed; one friendly patient waits) | Qwen Image 3 edit from both closes | room, mid (nurse and patient together), near | 4.5 s |
+| Beat | Source | What moves |
+| --- | --- | --- |
+| Packed waiting room | Qwen Image 3 edit, reasoning on, then a precise edit to remove a ghosted figure (`tools/hf_image.py --think`) | room, far (whispering patients), mid (the seated row with their chairs, the patient at the counter) |
+| The wide desk | First frame of the turn | room, far, mid; settles exactly onto the footage |
+| The turn | Seedance 2.5 image-to-video (`tools/seedance.py`) | footage |
+| The calm desk | Last frame of the turn | room, far, mid |
+| A medical assistant walks a patient back | Seedance 2.5 from the calm close-up: a real turn and walk, not a sliding cutout | a brief layered hold, then footage |
 
-**How a photo becomes planes** (`tools/layers.py`): a clean plate of the same frame with every person removed (Qwen edit) is aligned to the photo; everything that differs is lifted out; Depth Anything V2 Small (ONNX, CPU, `hero-src/models/depth.onnx`) cuts overlapping people apart where depth jumps; each piece goes to far, mid or near by its median depth. The room plane is the photo itself, borrowing the clean plate only right behind the cutouts, so at rest the stack reproduces the photo exactly and both handoffs to the footage are frame-identical. Contact pairs (the nurse's hand on the patient's shoulder) are kept in one plane with `--t`.
+**Realism rules this build follows**
+- Faces and hands are audited at full resolution before an image is used. The first waiting-room image failed (a malformed toddler, a duplicated woman, a ghosted doctor) and was replaced.
+- Nothing floats. Phones, charts and paperwork stay where they sit on the desk.
+- Plane rates 0.69, 0.80, 0.89 (adjacent planes 10 to 15 percent apart), under about 80px of travel, dolly under 5 percent, plain dissolves between scenes. From `references/devices.md`, "Layered scenes".
+- Contact holds: a seated person moves with their chair; staff and paperwork behind the counter stay with the desk (`--keep-box`); a person never spans two planes (small depth fragments merge into their neighbour).
 
-**Motion** (`src/hero.js`): planes move by depth (room 0, far .35, mid .65, near 1, objects 1.2 to 1.7). A scene arrives back to front, the room first and the nearest planes dropping in last from in front of the lens; it leaves by flying past the lens, nearest first, with motion blur.
+**How a photo becomes planes** (`tools/layers.py <photo> - <prefix> --t 0.3,0.95 --cut 90 --keep-box ...`): SegFormer-B2 (ADE20K, ONNX) finds people and their chairs; Depth Anything V2 Small separates overlapping people where depth jumps; pieces band by median depth; the room plane is the photo itself, filled from its own pixels only right behind what was lifted. Models live in `hero-src/models/`.
 
-**Sound** (`tools/soundtrack.py`): composed in code, royalty-free. A frantic, off-kilter 168 bpm with three phones that never stop, a tape-stop at the turn, then a warm 76 bpm with no phones. The film has the linear score; the site has two loops, cross-faded by scroll, that play only when the visitor turns sound on.
+**Sound** (`tools/soundtrack.py`, `tools/mix.py`): realistic room tone with synchronized whispered complaints from Seedance native audio ("We've been here over an hour." "Nobody ever calls you back."), three office phone lines that never stop, a quiet composed music bed under it, then calm room tone with a receptionist's greeting. The film carries the full mix; the site plays two seamless loops, cross-faded by scroll, only when the visitor turns sound on.
 
-**Rebuild the film**: `npm run build`, serve `site/` on port 4500, then `node tools/film.mjs`.
+**Rebuild**: `npm run build`, serve `site/` on port 4500, `python3 tools/mix.py`, then `node tools/film.mjs`.
 
-Keys live in the git-ignored `.env` at the repo root (`KIE_AI_API_KEY`, `HF_KEY`). `hero-src/` (raw generations, depth model, frames) is git-ignored.
+Keys live in the git-ignored `.env` at the repo root (`KIE_AI_API_KEY`, `HF_KEY`), and kie.ai is also injected by the session proxy. `hero-src/` (raw generations, models, frames) is git-ignored.
 
 ---
 

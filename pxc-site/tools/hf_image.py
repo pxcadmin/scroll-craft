@@ -1,7 +1,8 @@
 """Higgsfield image edit (Qwen Image 3) through the official SDK.
 
 usage:
-  python3 tools/hf_image.py <out.png> "<prompt>" <ref1.png> [ref2.png ...] [--ar 16:9] [--seed N]
+  python3 tools/hf_image.py <out.png> "<prompt>" <ref1.png> [ref2.png ...] [--ar 16:9] [--seed N] [--think]
+  --think turns on the model's prompt reasoning: slower, better faces and hands.
 
 Docs: https://open.higgsfield.ai/models/alibaba/qwen-image-3/edit/api-reference
 Reads HF_KEY ("KEY_ID:KEY_SECRET") from the environment or the nearest .env.
@@ -22,9 +23,12 @@ def main():
             i = argv.index(name); v = argv[i + 1]; del argv[i:i + 2]; return v
         return default
     ar, seed = opt("--ar", "16:9"), opt("--seed")
+    think = "--think" in argv
+    if think:
+        argv.remove("--think")
     out, prompt, *refs = argv
     args = {"image_urls": [seedance.upload(r) for r in refs], "prompt": prompt, "resolution": "2k",
-            "aspect_ratio": ar, "prompt_extend": False, "enable_thinking": False,
+            "aspect_ratio": ar, "prompt_extend": think, "enable_thinking": think,
             "negative_prompt": "text, letters, watermark, logo, cartoon, CGI, render, distorted faces, extra limbs"}
     if seed is not None:
         args["seed"] = int(seed)

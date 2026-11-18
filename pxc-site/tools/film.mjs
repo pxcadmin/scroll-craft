@@ -9,7 +9,7 @@ import path from 'node:path';
 
 const arg = (n, d) => { const i = process.argv.indexOf(n); return i > -1 ? process.argv[i + 1] : d; };
 const url = arg('--url', 'http://localhost:4500/'), fps = +arg('--fps', 30), W = +arg('--w', 1920), H = +arg('--h', 1080);
-const out = arg('--out', 'hero-src/pxc-hero-film.mp4'), audio = arg('--audio', 'hero-src/audio/film.wav');
+const out = arg('--out', 'hero-src/pxc-hero-film.mp4'), audio = arg('--audio', 'hero-src/audio/film-mix.wav');
 const dir = path.join(path.dirname(out), 'frames-' + W);
 fs.rmSync(dir, { recursive: true, force: true }); fs.mkdirSync(dir, { recursive: true });
 
@@ -18,11 +18,14 @@ const page = await browser.newPage({ viewport: { width: W, height: H } });
 await page.goto(url + (url.includes('?') ? '&' : '?') + 'film');
 await page.waitForFunction(() => window.__film && window.PXC_HERO_SEG);
 await page.evaluate(() => document.fonts.ready);
+await page.evaluate(() => Promise.race([window.__filmReady, new Promise((r) => setTimeout(r, 20000))])); // every plane decoded before frame one
 const seg = await page.evaluate(() => window.PXC_HERO_SEG);
 const total = seg.reduce((s, x) => s + x.sec, 0), N = Math.round(total * fps);
 const pAt = (sec) => { let acc = 0; for (const s of seg) { if (sec <= acc + s.sec) return s.p0 + (s.p1 - s.p0) * ((sec - acc) / s.sec); acc += s.sec; } return 1; };
-await page.evaluate(() => window.__film(0.45, 0)); // warm the footage
+await page.evaluate(() => window.__film(0.45, 0)); // load the footage
 await page.waitForTimeout(1500);
+await page.evaluate(() => window.__film(0, 0));     // and park it back at the start
+await page.waitForTimeout(800);
 for (let f = 0; f < N; f++) {
   const sec = f / fps;
   await page.evaluate(([p, s]) => window.__film(p, s), [pAt(sec), sec]);

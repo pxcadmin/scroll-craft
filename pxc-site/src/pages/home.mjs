@@ -3,28 +3,24 @@ import { DOMINOES, FAQ_HOME, SHEET_ROWS } from '../content.mjs';
 
 // The hero is four photographs cut into depth planes (see tools/layers.py) and one
 // filmed turn between them. data-depth sets how fast a plane moves: room 0,
-// far .35, mid .65, near 1, floating objects 1.2 and up.
+// far .35, mid .65, near 1. Nothing floats: objects stay where they sit in the photo.
 const LAYERS = [['room', 0], ['far', 0.35], ['mid', 0.65], ['near', 1]];
 const ly = (scn, [name, d], eager) =>
   `<div class="hx__ly hx__ly--${name}" data-depth="${d}"><img src="/assets/hero/${scn}-${name}.webp" alt="" width="1920" height="1080" decoding="async"${eager ? (name === 'room' ? ' fetchpriority="high"' : '') : ' loading="lazy"'}></div>`;
-const ob = (name, d, x, y, w) =>
-  `<div class="hx__ob" data-depth="${d}" style="--x:${x}%;--y:${y}%;--w:${w}%"><img src="/assets/hero/obj-${name}.webp" alt="" loading="lazy" onerror="this.parentNode.remove()"></div>`;
-const hchip = (text, d, x, y, calm, ring) =>
-  `<div class="hx__chip${calm ? ' hx__chip--calm' : ''}" data-depth="${d}" style="--d:${d};--x:${x}%;--y:${y}%"><span><i class="dot${calm ? ' dot--cyan' : ring ? ' is-ring' : ' dot--soft'}"></i>${text}</span></div>`;
 const scn = (id, mood, fx, fxm, extra = '', eager = false) =>
   `<div class="hx__scn" data-scn="${id}" data-mood="${mood}" style="--fx:${fx}%;--fxm:${fxm}%">${LAYERS.map((l) => ly(id, l, eager)).join('')}${extra}</div>`;
-const CHAOS_OBJ = ob('charts', 1.3, 6, 44, 12) + ob('phone', 1.55, 74, 58, 10) + ob('notes', 1.2, 44, 10, 7) + ob('paper', 1.7, 86, 8, 8);
 
 const hero = (cfg) => `
-<section class="hero" id="hero" data-sc-act="pin" data-sc-span="6" aria-labelledby="hero-h">
+<section class="hero" id="hero" data-sc-act="pin" data-sc-span="6.5" aria-labelledby="hero-h">
   <div data-sc-stage class="hero__stage">
     <div class="hx" aria-hidden="true">
-      ${scn('c1', 'chaos', 46, 38, CHAOS_OBJ + hchip('Line 1 ringing', 1.1, 60, 20, false, true) + hchip('Line 2 ringing', 0.8, 76, 38, false, true) + hchip('Voicemail full', 0.5, 54, 52), true)}
-      ${scn('c2', 'chaos', 58, 50, CHAOS_OBJ + hchip('Line 3 ringing', 0.6, 68, 26, false, true) + hchip('On hold 6:40', 1, 82, 62) + hchip('Callback, no owner', 0.8, 56, 48, false, true))}
-      <video class="hx__video" data-src="/assets/hero/clinic-move.mp4" data-src-m="/assets/hero/clinic-move-m.mp4" muted playsinline preload="none"></video>
-      ${scn('k1', 'calm', 58, 50, hchip('Calls answered', 0.6, 70, 22, true) + hchip('Queue: 0', 1, 82, 56, true))}
-      ${scn('k2', 'calm', 52, 44, hchip('Patient roomed', 0.7, 64, 24, true) + hchip('Next step: owned', 1, 78, 54, true))}
-      <div class="hx__glow"></div><div class="hx__sweep"></div>
+      ${scn('c1', 'chaos', 46, 38, '', true)}
+      ${scn('c2', 'chaos', 58, 50)}
+      <video class="hx__video" style="--fx:58%;--fxm:50%" data-vid="v1" data-src="/assets/hero/clinic-move.mp4" data-src-m="/assets/hero/clinic-move-m.mp4" muted playsinline preload="none"></video>
+      ${scn('k1', 'calm', 58, 50)}
+      ${scn('k2', 'calm', 52, 44)}
+      <video class="hx__video" style="--fx:52%;--fxm:44%" data-vid="v2" data-src="/assets/hero/clinic-walk.mp4" data-src-m="/assets/hero/clinic-walk-m.mp4" muted playsinline preload="none"></video>
+      <div class="hx__glow"></div>
     </div>
     <div class="hero__scrim" aria-hidden="true"></div><div class="hero__floor" aria-hidden="true"></div>
     <p class="vh" id="hero-desc">An overwhelmed medical clinic: every waiting chair full of unhappy patients, three receptionists on ringing phones, charts piled on the counter and sliding onto the floor. As you scroll, the same clinic becomes calm: the counter is clear, staff greet patients face to face, a nurse takes a patient back to an exam room and one patient waits comfortably.</p>
@@ -35,11 +31,11 @@ const hero = (cfg) => `
       <div class="actions">${CTA}<a class="link" href="/services/90-day-front-desk-reset/#the-90-days">See how the 90 days work</a></div>
       <p class="small">Ten questions. About five minutes. No patient information.</p>
     </div></div>
-    <p class="hero__cap" data-at="0.085 0.195">Every seat taken. <em>Every line ringing.</em></p>
-    <p class="hero__cap" data-at="0.275 0.39">The day your team <em>knows too well.</em></p>
-    <p class="hero__cap" data-at="0.5 0.68">A clearer <em>way through.</em></p>
-    <p class="hero__cap" data-at="0.715 0.8">Calls answered. <em>The queue is clear.</em></p>
-    <p class="hero__cap" data-at="0.87 1.1">More present. <em>Less pulled apart.</em></p>
+    <p class="hero__cap" data-at="0.075 0.175">Every seat taken. <em>Every line ringing.</em></p>
+    <p class="hero__cap" data-at="0.225 0.33">The day your team <em>knows too well.</em></p>
+    <p class="hero__cap" data-at="0.42 0.56">A clearer <em>way through.</em></p>
+    <p class="hero__cap" data-at="0.595 0.66">Calls answered. <em>The queue is clear.</em></p>
+    <p class="hero__cap" data-at="0.80 1.1">More present. <em>Less pulled apart.</em></p>
     <div class="hero__foot">
       <span data-l="a" class="on">The pressure</span><span class="hero__track" aria-hidden="true"><i></i></span><span data-l="b">The possibility</span>
       <div class="hero__ctl"><button type="button" class="snd" data-sound aria-pressed="false">Sound off</button><button type="button" data-pause aria-pressed="false">Pause motion</button></div>

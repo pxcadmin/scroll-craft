@@ -6,33 +6,21 @@
 .hero { background: #08080b; }
 .hero__stage { background: #08080b; isolation: isolate; }
 .hx { position: absolute; inset: 0; overflow: hidden; }
-.hx__scn { position: absolute; inset: 0; visibility: hidden; opacity: 0; }
-.hx__ly { position: absolute; inset: 0; width: 100%; height: 100%; will-change: transform, opacity, filter; transform-origin: var(--fx, 58%) 62%; }
+.hx__scn { position: absolute; inset: 0; visibility: hidden; opacity: 0; will-change: opacity; }
+.hx__ly { position: absolute; inset: 0; width: 100%; height: 100%; will-change: transform; transform-origin: var(--fx, 58%) 62%; }
 .hx__ly img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: var(--fx, 58%) 50%; }
 .hx__scn[data-mood="chaos"] .hx__ly--room img { filter: saturate(.92) contrast(1.04); }
-.hx__ob { position: absolute; left: var(--x); top: var(--y); width: var(--w); will-change: transform, opacity, filter; }
-.hx__ob img { width: 100%; height: auto; filter: drop-shadow(0 30px 30px rgba(0,0,0,.45)); }
-.hx__video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 58% 50%; opacity: 0; visibility: hidden; }
-
-/* status chips float between the planes */
-.hx__chip { position: absolute; left: var(--x); top: var(--y); opacity: 0; will-change: transform, opacity, filter; }
-.hx__chip > span { display: inline-flex; align-items: center; gap: .6rem; padding: .7rem 1rem; white-space: nowrap; font-size: calc(.8rem + var(--d) * .3rem);
-  background: rgba(14,14,20,.62); backdrop-filter: blur(10px) saturate(1.2); -webkit-backdrop-filter: blur(10px) saturate(1.2);
-  border: 1px solid rgba(255,52,57,.5); border-radius: 2px; color: var(--sc-ink); box-shadow: 0 18px 40px -18px rgba(0,0,0,.8); }
-.hx__chip--calm > span { border-color: rgba(100,232,237,.6); background: rgba(10,26,32,.62); font-family: var(--sc-font-display); font-size: calc(1.1rem + var(--d) * .5rem); }
+.hx__video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: var(--fx, 58%) 50%; visibility: hidden; transform: scale(1.08); transform-origin: var(--fx, 58%) 62%; }
 
 /* the brand at the edge of the frame: red and lilac under pressure, cyan in the calm */
 .hx__glow { position: absolute; inset: 0; pointer-events: none; z-index: 4; }
 .hx__glow::before, .hx__glow::after { content: ""; position: absolute; inset: 0; }
-.hx__glow::before { opacity: calc((1 - var(--after, 0)) * var(--pulse, 1));
-  box-shadow: inset 0 0 120px 10px rgba(255,52,57,.32), inset 0 -40px 140px -40px rgba(181,164,228,.45);
-  background: radial-gradient(60% 50% at 100% 100%, rgba(255,52,57,.16), transparent 70%), radial-gradient(45% 45% at 100% 0%, rgba(181,164,228,.14), transparent 70%); }
+.hx__glow::before { opacity: calc(1 - var(--after, 0));
+  box-shadow: inset 0 0 90px 4px rgba(255,52,57,.22), inset 0 -40px 120px -50px rgba(181,164,228,.30);
+  background: radial-gradient(50% 40% at 100% 100%, rgba(255,52,57,.10), transparent 70%); }
 .hx__glow::after { opacity: var(--after, 0);
-  box-shadow: inset 0 0 120px 10px rgba(100,232,237,.30), inset 0 -40px 140px -40px rgba(181,164,228,.35);
-  background: radial-gradient(60% 50% at 100% 100%, rgba(100,232,237,.15), transparent 70%), radial-gradient(45% 45% at 100% 0%, rgba(181,164,228,.12), transparent 70%); }
-/* a thin light sweep marks each handoff, like a lens passing a pane of glass */
-.hx__sweep { position: absolute; inset: 0; z-index: 5; pointer-events: none; opacity: var(--sweep, 0);
-  background: linear-gradient(105deg, transparent 30%, rgba(247,246,249,.16) 46%, rgba(100,232,237,.12) 50%, transparent 66%); mix-blend-mode: screen; }
+  box-shadow: inset 0 0 90px 4px rgba(100,232,237,.20), inset 0 -40px 120px -50px rgba(181,164,228,.24);
+  background: radial-gradient(50% 40% at 100% 100%, rgba(100,232,237,.10), transparent 70%); }
 
 /* copy and controls */
 .hero__scrim { position: absolute; inset: 0; pointer-events: none; z-index: 6; opacity: calc(1 - var(--hp, 0) * 9);
@@ -64,15 +52,12 @@
 
 @media (max-width: 860px) {
   .hx__ly, .hx__video { --fx: var(--fxm, 50%); }
-  .hx__video { object-position: var(--fxm, 50%) 50%; }
+  .hx__video { object-position: var(--fxm, 50%) 50%; transform-origin: var(--fxm, 50%) 62%; }
   .hero__scrim { background: linear-gradient(0deg, rgba(10,10,14,.98) 0%, rgba(10,10,14,.95) 50%, rgba(10,10,14,.5) 61%, transparent 72%); opacity: calc(1 - var(--hp, 0) * 9); }
   .hero__copy { top: auto; bottom: 5.25rem; transform: none; width: auto; right: var(--gut); }
   .hero__copy .h1 { margin: .9rem 0 1rem; } .hero__copy .actions { margin-top: 1.4rem; gap: .9rem 1.5rem; } .hero__copy .lede { font-size: 1rem; }
   .hero__copy .eyebrow { font-size: .62rem; letter-spacing: .14em; }
   .hero__cap { bottom: 5.5rem; right: var(--gut); }
-  .hx__chip { left: calc(var(--x) * .5 + 6%); }
-  .hx__chip:nth-of-type(n+3) { display: none; }
-  .hx__ob { width: calc(var(--w) * 1.7); left: calc(var(--x) * .6 + 10%); }
   .hero__foot { gap: .6rem; font-size: .62rem; letter-spacing: .12em; white-space: nowrap; bottom: 1rem; }
   .hero__ctl .snd { display: none; }
 }
