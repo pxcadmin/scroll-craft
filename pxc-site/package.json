@@ -1,0 +1,12 @@
+{
+  "name": "pxc-site",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "serve": "node ../plugins/nateherk-design/skills/scroll-craft/scripts/serve.mjs --root site --port 4500"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.0"
+  }
+}

@@ -1,0 +1,36 @@
+/* ============================================================== DOMINOES == */
+.dom__stage { display: grid; grid-template-columns: 5fr 7fr; align-items: center; gap: 2rem; padding: 6rem var(--gut) 3rem; }
+.dom__text { position: relative; z-index: 2; }
+.dom__list { position: relative; margin-top: 2.5rem; min-height: 12.5rem; border-top: 1px solid var(--line); padding-top: 1.75rem; }
+.dom__item { position: absolute; inset: 1.75rem 0 auto 0; opacity: 0; visibility: hidden; transform: translateY(14px); transition: opacity 500ms var(--ease), transform 500ms var(--ease), visibility 0s 500ms; display: grid; grid-template-columns: 4.5rem 1fr; }
+.dom__item.is-on { opacity: 1; visibility: visible; transform: none; transition-delay: 0s; }
+.dom__item .num { font-size: 4.5rem; color: var(--cyan); }
+.dom__item p { color: var(--sc-ink-soft); margin-top: .5rem; max-width: 26em; }
+.dom__pick { display: none; }
+.dom__after { margin-top: 1.75rem; display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 2rem; min-height: 56px; }
+.dom__row { position: relative; height: min(64vh, 34rem); perspective: 1500px; perspective-origin: 50% 30%; }
+.dom__rig { position: absolute; left: 34%; top: 60%; transform-style: preserve-3d; transform: scale3d(var(--ds, .8), var(--ds, .8), var(--ds, .8)) rotateX(-14deg) rotateY(-38deg); }
+@media (min-width: 1500px) { .dom__rig { --ds: .95; } }
+.slab { position: absolute; left: 0; top: 0; width: 132px; height: 250px; margin: -250px 0 0 -66px; padding: 0; border: 0; background: none; cursor: pointer; transform-style: preserve-3d;
+  transform: translate3d(calc((4.5 - var(--i)) * 112px), 0, 0) rotateY(90deg); }
+.slab__b { position: absolute; inset: 0; transform-style: preserve-3d; transform-origin: 50% 100%; transform: rotateX(calc(var(--fall, 0) * 1deg)); }
+.slab__f { position: absolute; inset: 0; border: 1px solid rgba(255,255,255,.28); background: linear-gradient(170deg, #22222c, #111117); display: flex; flex-direction: column; justify-content: space-between; padding: 14px; text-align: left; transition: border-color 400ms var(--ease), background 400ms var(--ease), box-shadow 400ms var(--ease); }
+.slab__f--back { transform: translateZ(-22px); background: #0d0d12; }
+.slab__f b { font: 400 54px/1 var(--sc-font-display); color: var(--sc-ink); } .slab__f span { font-size: 13px; line-height: 1.25; color: var(--sc-ink-soft); }
+.slab__e { position: absolute; left: 0; right: 0; top: 0; height: 22px; background: #2b2b36; border: 1px solid rgba(255,255,255,.28); transform-origin: top; transform: rotateX(-90deg); }
+.slab__s { position: absolute; top: 0; bottom: 0; left: 0; width: 22px; background: #191921; border: 1px solid rgba(255,255,255,.2); transform-origin: left; transform: rotateY(90deg); }
+.slab.is-picked .slab__f { border-color: var(--cyan); background: linear-gradient(170deg, #17303a, #10171d); box-shadow: 0 0 46px rgba(100,232,237,.3); }
+.slab.is-picked .slab__f b { color: var(--cyan); } .slab.is-picked .slab__e, .slab.is-picked .slab__s { border-color: var(--cyan); }
+.slab.is-picked .slab__b { transform: rotateX(0deg); transition: transform 900ms var(--ease); }
+.slab:hover .slab__f, .slab:focus-visible .slab__f { border-color: var(--cyan); }
+.dom__floor { position: absolute; left: -900px; top: 0; width: 1800px; height: 900px; margin-top: -450px; transform: rotateX(90deg); background: radial-gradient(closest-side, rgba(100,232,237,.10), transparent 70%), repeating-linear-gradient(90deg, rgba(255,255,255,.06) 0 1px, transparent 1px 112px); -webkit-mask-image: radial-gradient(closest-side, #000 20%, transparent 90%); mask-image: radial-gradient(closest-side, #000 20%, transparent 90%); }
+
+/* phones and reduced motion: a rail of ten cards, no pin */
+.dom--rail .dom__stage { display: block; padding: var(--pad) 0; height: auto; position: static; overflow: visible; }
+.dom--rail .dom__text { padding-inline: var(--gut); }
+.dom--rail .dom__row { display: none; }
+.dom--rail .dom__list { border: 0; padding: 0; min-height: 0; display: flex; gap: 1rem; overflow-x: auto; scroll-snap-type: x mandatory; margin-inline: calc(var(--gut) * -1); padding: .25rem var(--gut) 1.25rem; scrollbar-width: thin; }
+.dom--rail .dom__item { position: relative; inset: auto; opacity: 1; visibility: visible; transform: none; flex: 0 0 min(78vw, 20rem); scroll-snap-align: center; display: flex; flex-direction: column; gap: .5rem; border: 1px solid var(--line); border-radius: 2px; background: var(--sc-surface); padding: 1.5rem; min-height: 19rem; transition: border-color 250ms var(--ease); }
+.dom--rail .dom__item.is-picked { border-color: var(--cyan); background: linear-gradient(170deg, #17262e, #121219); }
+.dom--rail .dom__pick { display: inline-flex; margin-top: auto; align-self: flex-start; background: none; border: 0; border-bottom: 1px solid var(--cyan); padding: .7rem 0 .2rem; min-height: 44px; cursor: pointer; color: var(--sc-ink); }
+@media (min-width: 861px) { .dom--rail .dom__list { flex-wrap: wrap; overflow: visible; margin-inline: 0; padding-inline: 0; } .dom--rail .dom__item { flex: 1 1 17rem; min-height: 15rem; } .dom--rail .dom__stage { padding-inline: 0; } }

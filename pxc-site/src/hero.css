@@ -1,0 +1,64 @@
+/* =========================================================== HERO =========
+   Four photographs, each cut into real depth planes, and one filmed turn
+   between them. hero.js writes every transform; this file only sets the
+   stack. Layer order inside a scene, back to front:
+   room (clean plate) < far people and furniture < mid < near < floating objects */
+.hero { background: #08080b; }
+.hero__stage { background: #08080b; isolation: isolate; }
+.hx { position: absolute; inset: 0; overflow: hidden; }
+.hx__scn { position: absolute; inset: 0; visibility: hidden; opacity: 0; will-change: opacity; }
+.hx__ly { position: absolute; inset: 0; width: 100%; height: 100%; will-change: transform; transform-origin: var(--fx, 58%) 62%; }
+.hx__ly img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: var(--fx, 58%) 50%; }
+.hx__scn[data-mood="chaos"] .hx__ly--room img { filter: saturate(.92) contrast(1.04); }
+.hx__video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: var(--fx, 58%) 50%; visibility: hidden; transform: scale(1.08); transform-origin: var(--fx, 58%) 62%; }
+
+/* the brand at the edge of the frame: red and lilac under pressure, cyan in the calm */
+.hx__glow { position: absolute; inset: 0; pointer-events: none; z-index: 4; }
+.hx__glow::before, .hx__glow::after { content: ""; position: absolute; inset: 0; }
+.hx__glow::before { opacity: calc(1 - var(--after, 0));
+  box-shadow: inset 0 0 90px 4px rgba(255,52,57,.22), inset 0 -40px 120px -50px rgba(181,164,228,.30);
+  background: radial-gradient(50% 40% at 100% 100%, rgba(255,52,57,.10), transparent 70%); }
+.hx__glow::after { opacity: var(--after, 0);
+  box-shadow: inset 0 0 90px 4px rgba(100,232,237,.20), inset 0 -40px 120px -50px rgba(181,164,228,.24);
+  background: radial-gradient(50% 40% at 100% 100%, rgba(100,232,237,.10), transparent 70%); }
+
+/* copy and controls */
+.hero__scrim { position: absolute; inset: 0; pointer-events: none; z-index: 6; opacity: calc(1 - var(--hp, 0) * 9);
+  background: linear-gradient(90deg, rgba(8,8,11,.86) 0%, rgba(8,8,11,.74) 30%, rgba(8,8,11,.3) 48%, transparent 60%); }
+.hero__floor { position: absolute; inset: auto 0 0 0; height: 40%; z-index: 6; pointer-events: none;
+  background: linear-gradient(0deg, rgba(8,8,11,.9) 0%, rgba(8,8,11,.55) 40%, transparent 100%); opacity: clamp(0, calc(var(--hp, 0) * 14 - .6), 1); }
+.hero__copy { position: absolute; z-index: 7; left: var(--gut); top: 50%; transform: translateY(-46%); width: min(46rem, 50vw); }
+.hero__copy .h1 { margin: 1.5rem 0 1.75rem; font-size: clamp(2.75rem, 5.6vw, 6.25rem); }
+@media (min-width: 861px) { .hero__copy .h1 span { white-space: nowrap; } }
+.hero__copy .h1 span { display: block; opacity: 0; animation: rise 900ms var(--ease) forwards; } .hero__copy .h1 span + span { animation-delay: 120ms; }
+.hero__fade > :not(.h1) { opacity: 0; animation: rise 900ms var(--ease) 260ms forwards; }
+@keyframes rise { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+.hero__copy .lede { max-width: 30em; } .hero__copy .actions { margin-top: 2.25rem; } .hero__copy .small { margin-top: 1.1rem; }
+.hero__fade { will-change: opacity, transform; }
+.hero__cap { position: absolute; z-index: 7; left: var(--gut); bottom: clamp(5.5rem, 13vh, 8.5rem); margin: 0; font-family: var(--sc-font-display); font-size: clamp(1.75rem, 1.2rem + 2.6vw, 3.5rem); line-height: 1.02; letter-spacing: -.02em; color: var(--sc-ink); max-width: 13em; text-shadow: 0 2px 30px rgba(8,8,11,.9); opacity: 0; visibility: hidden; }
+.hero__cap em { color: var(--lilac); }
+.hero__foot { position: absolute; z-index: 8; left: var(--gut); right: var(--gut); bottom: 1.75rem; display: flex; align-items: center; gap: 1.25rem; font-size: .72rem; letter-spacing: .18em; text-transform: uppercase; color: var(--sc-ink-soft); }
+.hero__track { flex: 1; max-width: 22rem; height: 1px; background: var(--line); position: relative; }
+.hero__track i { position: absolute; inset: 0; background: var(--cyan); transform-origin: left; transform: scaleX(var(--hp, 0)); }
+.hero__foot .on { color: var(--sc-ink); }
+.hero__ctl { margin-left: auto; display: flex; gap: 1.25rem; }
+.hero__ctl button { background: none; border: 0; padding: .75rem 0; cursor: pointer; font: inherit; letter-spacing: inherit; text-transform: inherit; color: var(--sc-ink-soft); min-height: 44px; }
+.hero__ctl button:hover, .hero__ctl button[aria-pressed="true"] { color: var(--cyan); }
+.motion-off .is-ring { animation: none; }
+
+/* film mode: the page renders the hero alone, for the frame-by-frame capture */
+.film .bar, .film .hero__copy, .film .hero__foot, .film .hero__scrim, .film .hero__floor, .film main > :not(.hero), .film footer, .film .skip { display: none !important; }
+.film .hero__cap { bottom: 9vh; }
+
+@media (max-width: 860px) {
+  .hx__ly, .hx__video { --fx: var(--fxm, 50%); }
+  .hx__video { object-position: var(--fxm, 50%) 50%; transform-origin: var(--fxm, 50%) 62%; }
+  .hero__scrim { background: linear-gradient(0deg, rgba(10,10,14,.98) 0%, rgba(10,10,14,.95) 50%, rgba(10,10,14,.5) 61%, transparent 72%); opacity: calc(1 - var(--hp, 0) * 9); }
+  .hero__copy { top: auto; bottom: 5.25rem; transform: none; width: auto; right: var(--gut); }
+  .hero__copy .h1 { margin: .9rem 0 1rem; } .hero__copy .actions { margin-top: 1.4rem; gap: .9rem 1.5rem; } .hero__copy .lede { font-size: 1rem; }
+  .hero__copy .eyebrow { font-size: .62rem; letter-spacing: .14em; }
+  .hero__cap { bottom: 5.5rem; right: var(--gut); }
+  .hero__foot { gap: .6rem; font-size: .62rem; letter-spacing: .12em; white-space: nowrap; bottom: 1rem; }
+  .hero__ctl .snd { display: none; }
+}
+@media (max-width: 860px) and (max-height: 720px) { .hero__copy .small { display: none; } .hero__copy .lede { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; } }
